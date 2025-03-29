@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { signUpWithEmail } from '../../store/authSlice';
+import { AppDispatch } from '../../store';
 
 interface RegisterFormProps {
   onToggleForm: () => void;
 }
 
 export default function RegisterForm({ onToggleForm }: RegisterFormProps) {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -24,8 +25,12 @@ export default function RegisterForm({ onToggleForm }: RegisterFormProps) {
     
     try {
       await dispatch(signUpWithEmail({ email, password }));
-    } catch (err: any) {
-      setError(err.message || 'Registration failed. Please try again.');
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || 'Registration failed. Please try again.');
+      } else {
+        setError('Registration failed. Please try again.');
+      }
     }
   };
 

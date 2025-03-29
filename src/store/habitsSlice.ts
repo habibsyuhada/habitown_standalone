@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 import { supabase } from '../lib/supabase';
-import { Category, Habit, HabitRecord, HabitState } from '../types/models';
+import { Category, Habit, HabitState } from '../types/models';
 import { RootState } from './index';
 
 // Initial state

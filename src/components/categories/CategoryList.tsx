@@ -14,11 +14,6 @@ export default function CategoryList() {
     return habits.filter(habit => habit.category_id === categoryId).length;
   };
   
-  // Check if category is used in any habit
-  const isCategoryUsed = (categoryId: string) => {
-    return habits.some(habit => habit.category_id === categoryId);
-  };
-  
   // Handler for delete category
   const handleDeleteCategory = (categoryId: string) => {
     if (window.confirm('Apakah Anda yakin ingin menghapus kategori ini? Habit yang menggunakan kategori ini akan berubah menjadi Tanpa Kategori.')) {
@@ -111,7 +106,7 @@ export default function CategoryList() {
         <div className="mt-8 p-4 bg-base-200 rounded-lg">
           <h3 className="font-medium mb-2">Informasi</h3>
           <ul className="list-disc pl-5 space-y-1 text-sm">
-            <li>Menghapus kategori akan mengubah semua habit terkait menjadi "Tanpa Kategori"</li>
+            <li>Menghapus kategori akan mengubah semua habit terkait menjadi &quot;Tanpa Kategori&quot;</li>
             <li>Kategori yang digunakan oleh habit masih dapat dihapus</li>
           </ul>
         </div>

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { useHabits } from '../../lib/useHabits';
 import HabitCard from './HabitCard';
 import HabitForm from './HabitForm';
@@ -8,10 +8,10 @@ export default function HabitList() {
   const [filter, setFilter] = useState<string | null>(null);
   
   // Find category by id
-  const getCategoryById = (categoryId: string | null) => {
+  const getCategoryById = useCallback((categoryId: string | null) => {
     if (!categoryId) return null;
     return categories.find(c => c.id === categoryId) || null;
-  };
+  }, [categories]);
   
   // Group habits by category for display
   const groupedHabits = useMemo(() => {
@@ -54,7 +54,7 @@ export default function HabitList() {
     }
     
     return grouped;
-  }, [habits, categories, filter]);
+  }, [habits, categories, filter, getCategoryById]);
   
   if (isLoading) {
     return (

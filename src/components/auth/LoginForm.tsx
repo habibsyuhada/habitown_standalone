@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { signInWithEmail } from '../../store/authSlice';
+import { AppDispatch } from '../../store';
 
 interface LoginFormProps {
   onToggleForm: () => void;
 }
 
 export default function LoginForm({ onToggleForm }: LoginFormProps) {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -18,7 +19,7 @@ export default function LoginForm({ onToggleForm }: LoginFormProps) {
     
     try {
       await dispatch(signInWithEmail({ email, password }));
-    } catch (err) {
+    } catch {
       setError('Login failed. Please check your credentials and try again.');
     }
   };
@@ -64,7 +65,7 @@ export default function LoginForm({ onToggleForm }: LoginFormProps) {
           </div>
         </form>
         <div className="text-center mt-4">
-          <p>Don't have an account? 
+          <p>Don&apos;t have an account? 
             <button 
               onClick={onToggleForm} 
               className="text-primary btn-link ml-1"
