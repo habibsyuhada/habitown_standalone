@@ -1,40 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# HabiTown - Habit Tracker App
 
-## Getting Started
+HabiTown adalah aplikasi habit tracker yang dapat digunakan secara lokal tanpa login, atau dengan login untuk menyimpan data ke Supabase dan dapat disinkronkan antar perangkat.
 
-First, run the development server:
+## Fitur
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Buat dan kelola kebiasaan (habits) dengan beberapa kategori
+- Lacak kemajuan harian, mingguan, atau bulanan
+- Lihat statistik dan streak kemajuan Anda
+- Dapat digunakan secara lokal tanpa perlu login
+- Sinkronisasi data antar perangkat dengan login Supabase
+
+## Teknologi yang Digunakan
+
+- Next.js
+- TypeScript
+- Redux & Redux Toolkit untuk state management
+- Redux Persist untuk penyimpanan lokal
+- Supabase untuk autentikasi dan database
+- DaisyUI (Tailwind CSS) untuk UI
+- date-fns untuk manipulasi tanggal
+
+## Cara Penggunaan
+
+1. Clone repository ini
+2. Install dependensi dengan `npm install`
+3. Salin `.env.local.example` ke `.env.local` dan isi dengan kredensial Supabase Anda
+4. Jalankan aplikasi dengan `npm run dev`
+5. Buka `http://localhost:3000` di browser Anda
+
+## Struktur Database Supabase
+
+```sql
+-- Tabel Categories  
+CREATE TABLE categories (  
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),  
+    name VARCHAR(100) UNIQUE NOT NULL,  
+    created_at TIMESTAMP DEFAULT NOW()  
+);  
+
+-- Tabel Habits  
+CREATE TABLE habits (  
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),  
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,  
+    category_id UUID REFERENCES categories(id) ON DELETE SET NULL,  
+    name VARCHAR(100) NOT NULL,  
+    description TEXT,  
+    frequency VARCHAR(20) NOT NULL,  
+    created_at TIMESTAMP DEFAULT NOW()  
+);  
+
+-- Tabel Habit_Records  
+CREATE TABLE habit_records (  
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),  
+    habit_id UUID REFERENCES habits(id) ON DELETE CASCADE,  
+    date DATE NOT NULL,  
+    completed BOOLEAN DEFAULT FALSE,  
+    created_at TIMESTAMP DEFAULT NOW()  
+);
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Lisensi
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+MIT
